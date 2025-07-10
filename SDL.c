@@ -17,9 +17,9 @@
 #include <math.h>
 #define STB_RECT_PACK_IMPLEMENTATION
 #define STB_TRUETYPE_IMPLEMENTATION
-
 #define STB_DS_IMPLEMENTATION
 #include "Dependencies/stb_ds.h"
+#include "Dependencies/KibichoFonts.h"
 #define INDEX(x, y, cols) ((x) * (cols) + (y))
 #define TRUE 1
 #define FALSE 0
@@ -29,7 +29,7 @@
 typedef struct scene_struct *Scene;
 struct scene_struct
 {
-
+	KibichoFont *font;
 	SDL_Renderer *renderer;
 	SDL_Window *window;
 	Uint32 windowID;
@@ -48,6 +48,14 @@ Scene CreateScene(char *windowName, int windowWidth, int windowHeight)
 	SDL_RenderSetLogicalSize(scene->renderer, windowWidth, windowHeight);
 	SDL_SetRenderDrawBlendMode(scene->renderer, SDL_BLENDMODE_BLEND);
 	
+	//Load Fonts
+	char *fontName1 = "Assets/Fonts/GeistMono/GeistMono-Regular.ttf";
+	char *fontName2 = "Assets/Fonts/GeistMono/GeistMono-ExtraBold.ttf";
+	
+	KibichoFont font1  = LoadFont(scene->renderer, fontName1, 12);
+	KibichoFont font2  = LoadFont(scene->renderer, fontName2, 12);
+	arrput(scene->font, font1);
+	arrput(scene->font, font2);
 	return scene;
 }
 
@@ -57,6 +65,14 @@ void DestroyScene(Scene scene)
 	{	
 		if(scene->window){SDL_DestroyWindow(scene->window);}
 		if(scene->renderer){SDL_DestroyRenderer(scene->renderer);}
+		if(scene->font)
+		{
+			for(size_t i = 0; i < arrlen(scene->font); i++)
+			{
+				DestroyFont(scene->font[i]);
+			}
+			arrfree(scene->font);
+		}
 		free(scene);
 	}
 }
@@ -66,7 +82,7 @@ void MainLoop(void *sceneArg)
 	Scene scene = *(Scene*)sceneArg;
 	
 	//Set Background color
-	SDL_SetRenderDrawColor(scene->renderer, 255, 0, 0, 255);
+	SDL_SetRenderDrawColor(scene->renderer, 225, 225, 225, 255);
 	SDL_RenderClear(scene->renderer);
 	SDL_SetRenderDrawColor(scene->renderer, 0, 0, 0, 255);
 	

@@ -20,11 +20,12 @@
 #define STB_DS_IMPLEMENTATION
 #include "Dependencies/stb_ds.h"
 #include "Dependencies/KibichoFonts.h"
+#include "Dependencies/SDL2_gfxPrimitives.h" 
 #define INDEX(x, y, cols) ((x) * (cols) + (y))
 #define TRUE 1
 #define FALSE 0
 
-// Run: emcc SDL.c -s USE_SDL=2 -s FULL_ES2=1 -s WASM=1 -Icglm/include -DCGLM_HEADER_ONLY --preload-file Assets/Fonts/wew.ttf --preload-file Assets/Fonts/GeistMono/GeistMono-ExtraBold.ttf --preload-file Assets/Fonts/GeistMono/GeistMono-Regular.ttf -o SDL.html
+// Run: emcc SDL.c -s Dependencies/SDL2_gfxPrimitives.c -s USE_SDL=2 -s FULL_ES2=1 -s WASM=1 -Icglm/include -DCGLM_HEADER_ONLY --preload-file Assets/Fonts/wew.ttf --preload-file Assets/Fonts/GeistMono/GeistMono-ExtraBold.ttf --preload-file Assets/Fonts/GeistMono/GeistMono-Regular.ttf -o SDL.html
 // Preview: emrun SDL.html
 typedef struct scene_struct *Scene;
 struct scene_struct
@@ -86,6 +87,7 @@ void MainLoop(void *sceneArg)
 	SDL_RenderClear(scene->renderer);
 	SDL_SetRenderDrawColor(scene->renderer, 0, 0, 0, 255);
 	
+	filledCircleRGBA(scene->renderer, 320, 240, 50, 255, 0, 0, 255);
 	
 	SDL_RenderPresent(scene->renderer);
 	SDL_Delay(16);

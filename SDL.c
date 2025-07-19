@@ -3,7 +3,7 @@
 #define STB_TRUETYPE_IMPLEMENTATION
 #include "Dependencies/KibichoSDL.h"
 
-//Run: emcc SDL.c -s Dependencies/KibichoDraw.c -s Dependencies/KibichoFont.c -s Dependencies/KibichoPolynomial.c -s Dependencies/KibichoScene.c -s Dependencies/SDL2_framerate.c -s Dependencies/SDL2_gfxPrimitives.c -s USE_SDL=2 -s FULL_ES2=1 -s WASM=1 --preload-file Assets/Fonts/wew.ttf --preload-file Assets/Fonts/GeistMono/GeistMono-ExtraBold.ttf --preload-file Assets/Fonts/GeistMono/GeistMono-Regular.ttf -o SDL.html
+//Run: emcc SDL.c -s Dependencies/KibichoDraw.c -s Dependencies/KibichoFont.c -s Dependencies/KibichoPolynomial.c -s Dependencies/KibichoLayout.c -s Dependencies/KibichoScene.c -s Dependencies/SDL2_framerate.c -s Dependencies/SDL2_gfxPrimitives.c -s USE_SDL=2 -s FULL_ES2=1 -s WASM=1 --preload-file Assets/Fonts/wew.ttf --preload-file Assets/Fonts/GeistMono/GeistMono-ExtraBold.ttf --preload-file Assets/Fonts/GeistMono/GeistMono-Regular.ttf -o SDL.html
 // Preview: emrun SDL.html
 
 void TestPolynomialDraw(KibichoScene scene)

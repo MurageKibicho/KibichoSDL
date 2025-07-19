@@ -27,6 +27,7 @@
 typedef struct kibicho_scene_struct *KibichoScene;
 typedef struct kibicho_font_struct *KibichoFont;
 typedef struct kibicho_polynomial_struct *KibichoPolynomial;
+typedef struct kibicho_layout_struct *KibichoLayout;
 /*KibichoScene*/
 struct kibicho_scene_struct
 {
@@ -42,6 +43,8 @@ struct kibicho_scene_struct
 	/*Fonts*/
 	KibichoFont *font;
 	
+	/*Layouts*/
+	KibichoLayout *layout;
 };
 
 KibichoScene KibichoScene_CreateScene(char *windowName, int windowWidth, int windowHeight);
@@ -87,3 +90,11 @@ void KibichoDraw_ThickAALineRGBA(SDL_Renderer *renderer, Sint16 x1, Sint16 y1, S
 void KibichoDraw_Polynomial(KibichoScene scene, KibichoPolynomial polynomial);
 void KibichoDraw_TitlePoint(KibichoScene scene, int fontIndex, int x, int y, int radius, uint32_t pointColor,uint32_t pointOutlineColor, int textX, int textY, uint32_t textColor, char *text);
 void KibichoDraw_OutlinePoint(KibichoScene scene, int x, int y, int radius, uint32_t pointColor,uint32_t pointOutlineColor);
+
+/*KibichoLayout*/
+struct kibicho_layout_struct
+{
+	SDL_Texture *texture;
+};
+KibichoLayout KibichoLayout_CreateLayout(KibichoScene scene);
+void KibichoLayout_DestroyLayout(KibichoLayout layout);

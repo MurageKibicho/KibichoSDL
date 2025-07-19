@@ -22,8 +22,13 @@ KibichoScene KibichoScene_CreateScene(char *windowName, int windowWidth, int win
 	
 	KibichoFont font1  = KibichoFont_LoadFont(scene->renderer, fontName1, 12);
 	KibichoFont font2  = KibichoFont_LoadFont(scene->renderer, fontName2, 12);
+	scene->font = NULL;
 	arrput(scene->font, font1);
 	arrput(scene->font, font2);
+	
+	scene->layout = NULL;
+	KibichoLayout layout0  = KibichoLayout_CreateLayout(scene);
+	arrput(scene->layout,layout0);
 	return scene;
 }
 
@@ -40,6 +45,14 @@ void KibichoScene_DestroyScene(KibichoScene scene)
 				KibichoFont_DestroyFont(scene->font[i]);
 			}
 			arrfree(scene->font);
+		}
+		if(scene->layout)
+		{
+			for(size_t i = 0; i < arrlen(scene->layout); i++)
+			{
+				KibichoLayout_DestroyLayout(scene->layout[i]);
+			}
+			arrfree(scene->layout);
 		}
 		free(scene);
 	}

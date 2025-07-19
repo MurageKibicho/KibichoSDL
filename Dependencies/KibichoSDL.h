@@ -94,6 +94,7 @@ void KibichoDraw_OutlinePoint(KibichoScene scene, int x, int y, int radius, uint
 /*KibichoLayout*/
 struct kibicho_layout_struct
 {
+	SDL_Rect screenLocation;
 	SDL_Texture *texture;
 };
 KibichoLayout KibichoLayout_CreateLayout(KibichoScene scene);

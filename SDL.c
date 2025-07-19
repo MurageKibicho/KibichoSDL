@@ -8,6 +8,11 @@
 
 void TestPolynomialDraw(KibichoScene scene)
 {
+	//Set Background color
+	SDL_SetRenderDrawColor(scene->renderer, 225, 225, 225, 255);
+	SDL_RenderClear(scene->renderer);
+	SDL_SetRenderDrawColor(scene->renderer, 0, 0, 0, 255);
+	
 	int visualSpacing = 30;
 	uint32_t lineColour = 0x60aac6;
 	uint32_t centerLineWidth  = 3;
@@ -47,22 +52,47 @@ void TestPolynomialDraw(KibichoScene scene)
 
 void MainLoop(void *sceneArg) 
 {
+	static float angle = 0.0f;  
+	static float progress = 0.0f;  // Animation progress (0.0 to 1.0)
+	static bool animating = true;
 	KibichoScene scene = *(KibichoScene*)sceneArg;
-	
-	//Set Background color
-	SDL_SetRenderDrawColor(scene->renderer, 225, 225, 225, 255);
-	SDL_RenderClear(scene->renderer);
-	SDL_SetRenderDrawColor(scene->renderer, 0, 0, 0, 255);
 	
 	//Print framerate
 	snprintf(scene->fpsText, sizeof(scene->fpsText), "Current FPS: %d", SDL_getFramerate(&scene->fpsManager));
 	KibichoFont_Text(scene->renderer, scene->font[0], scene->windowWidth-90, 10, scene->fpsText, 0x000000FF);
 	
+	//Set layout0 texture as render target
+	SDL_SetRenderTarget(scene->renderer, scene->layout[0]->texture);
+	
 	TestPolynomialDraw(scene);
 	
+	//Reset render target
+	SDL_SetRenderTarget(scene->renderer, NULL);
+	SDL_RenderClear(scene->renderer);
+	
+	// Calculate animated rectangle dimensions
+	int startWidth = scene->windowWidth / 4;
+	int startHeight = scene->windowHeight / 4;
+	int targetWidth = scene->windowWidth;
+	int targetHeight = scene->windowHeight;
+	scene->layout[0]->screenLocation.w = startWidth + (int)((targetWidth - startWidth) * progress);
+	scene->layout[0]->screenLocation.h = startHeight + (int)((targetHeight - startHeight) * progress);
+	
+        SDL_RenderCopy(scene->renderer, scene->layout[0]->texture, NULL, &(scene->layout[0]->screenLocation));
+
 	SDL_RenderPresent(scene->renderer);
 	//Use framerate
 	SDL_framerateDelay(&scene->fpsManager); 
+	
+	if(animating)
+	{
+		progress += 0.01f;  // Adjust speed as needed
+		if(progress >= 1.0f)
+		{
+			progress = 1.0f;
+		animating = false;  // Stop when full size
+		}
+	}
 }
 
 int main()
